@@ -1,12 +1,12 @@
 <ul class="list-none m-0 p-0">
-  @for (contact of store.contacts(); track contact.id) {
+  @for (chat of store.chats(); track chat.id) {
     <li class="py-1">
       <button
         type="button"
         class="w-full text-left px-3 py-2 border border-gray-200 bg-white cursor-pointer"
-        (click)="select(contact)"
+        (click)="select(chat)"
       >
-        {{ contact.name }}
+        {{ chat.name }}
       </button>
     </li>
   }

@@ -1,4 +1,5 @@
 import { Service, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 import { withEntities, setAllEntities, addEntity, removeAllEntities } from '@ngrx/signals/entities';
 
@@ -18,12 +19,15 @@ export class MessagesStore extends signalStore(
     messages: computed(() => entities()),
   })),
   withMethods((store, api = inject(MessagesApiService)) => ({
-    loadMessages(chatId: string): void {
+    async loadMessages(chatId: string) {
       patchState(store, { loading: true, activeChatId: chatId });
-      api.listMessages(chatId).subscribe({
-        next: (messages) => patchState(store, setAllEntities(messages), { loading: false }),
-        error: () => patchState(store, { loading: false }),
-      });
+      try {
+        const messages = await firstValueFrom(api.listMessages(chatId));
+        patchState(store, setAllEntities(messages), { loading: false });
+      } catch (err) {
+        patchState(store, { loading: false });
+        throw err;
+      }
     },
     addMessage(message: Message): void {
       patchState(store, addEntity(message));

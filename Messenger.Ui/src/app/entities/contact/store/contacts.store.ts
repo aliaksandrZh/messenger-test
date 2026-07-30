@@ -1,4 +1,5 @@
 import { Service, computed, inject } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 import {
   signalStore,
   withState,
@@ -26,12 +27,15 @@ export class ContactsStore extends signalStore(
     selectedContact: computed(() => entities().find((c) => c.id === selectedId()) ?? null),
   })),
   withMethods((store, api = inject(UsersApiService)) => ({
-    loadContacts(): void {
+    async loadContacts() {
       patchState(store, { loading: true });
-      api.searchUsers('').subscribe({
-        next: (contacts) => patchState(store, setAllEntities(contacts), { loading: false }),
-        error: () => patchState(store, { loading: false }),
-      });
+      try {
+        const contacts = await firstValueFrom(api.searchUsers(''));
+        patchState(store, setAllEntities(contacts), { loading: false });
+      } catch (err) {
+        patchState(store, { loading: false });
+        throw err;
+      }
     },
     selectContact(id: string): void {
       patchState(store, { selectedId: id });

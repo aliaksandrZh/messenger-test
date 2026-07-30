@@ -12,7 +12,7 @@ public class ChatsController(IChatService chatService) : ControllerBase
   [ProducesResponseType(typeof(ChatIdDto), StatusCodes.Status201Created)]
   public async Task<IActionResult> Create([FromBody] CreateChatRequest request, CancellationToken cancellationToken)
   {
-    var chatId = await chatService.CreateChatAsync(request.Name, cancellationToken);
+    var chatId = await chatService.CreateChatAsync(request.Name, request.CreatorUserId, cancellationToken);
     return CreatedAtAction(nameof(Search), null, new ChatIdDto(chatId));
   }
 
@@ -38,5 +38,13 @@ public class ChatsController(IChatService chatService) : ControllerBase
   {
     await chatService.AddUsersToChatAsync(id, [request.UserId], cancellationToken);
     return Ok();
+  }
+
+  [HttpGet("user/{userId:guid}")]
+  [ProducesResponseType(typeof(IReadOnlyList<ChatDto>), StatusCodes.Status200OK)]
+  public async Task<IActionResult> GetForUser(Guid userId, [FromQuery] string? query, CancellationToken cancellationToken)
+  {
+    var chats = await chatService.GetChatsForUserAsync(userId, query ?? string.Empty, cancellationToken);
+    return Ok(ContractMapper.ToDtoList(chats));
   }
 }

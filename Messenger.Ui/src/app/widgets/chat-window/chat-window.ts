@@ -1,11 +1,12 @@
-import { Component, OnDestroy, computed, effect, inject, input } from '@angular/core';
+import { Component, OnDestroy, computed, effect, inject, input, signal } from '@angular/core';
 
 import { MessageList } from '../../features/message-list/message-list';
 import { MessageInput } from '../../features/message-input/message-input';
 import { MessagesStore } from '../../entities/message/store/messages.store';
 import { ContactsStore } from '../../entities/contact/store/contacts.store';
+import { ChatsStore } from '../../entities/chat/store/chats.store';
 import { ChatHubService } from '../../shared/signalr/chat-hub.service';
-import { CURRENT_USER_ID } from '../../shared/config/config';
+import { SessionStore } from '../../shared/session/session.store';
 
 @Component({
   selector: 'app-chat-window',
@@ -17,8 +18,12 @@ export class ChatWindow implements OnDestroy {
   readonly contactId = input<string>();
 
   private readonly messagesStore = inject(MessagesStore);
-  private readonly contactsStore = inject(ContactsStore);
+  protected readonly contactsStore = inject(ContactsStore);
+  private readonly chatsStore = inject(ChatsStore);
+  private readonly session = inject(SessionStore);
   private readonly hub = inject(ChatHubService);
+
+  protected readonly showInvite = signal(false);
 
   // Push incoming SignalR messages into the store for the active chat.
   private readonly subscription = this.hub.messages$.subscribe((message) => {
@@ -28,21 +33,30 @@ export class ChatWindow implements OnDestroy {
   });
 
   // On chat selection (route param): load history + join the hub group.
-  // NOTE: on param-only changes Angular reuses this component, so leaveChat
-  // for the previous chat is not handled here yet (placeholder).
   private readonly joinEffect = effect(() => {
     const chatId = this.contactId();
     if (!chatId) return;
 
     this.messagesStore.loadMessages(chatId);
-    void this.hub.joinChatAsync(chatId, CURRENT_USER_ID);
+    const userId = this.session.currentUserId();
+    if (userId) void this.hub.joinChatAsync(chatId, userId);
   });
 
   readonly header = computed(() => {
     const id = this.contactId();
-    const contact = this.contactsStore.contacts().find((c) => c.id === id);
-    return contact ? contact.name : `Chat ${id ?? ''}`;
+    const chat = this.chatsStore.chats().find((c) => c.id === id);
+    return chat ? chat.name : `Chat ${id ?? ''}`;
   });
+
+  protected toggleInvite(): void {
+    this.showInvite.update((v) => !v);
+  }
+
+  protected invite(userId: string): void {
+    const chatId = this.contactId();
+    if (!chatId) return;
+    void this.chatsStore.invite(chatId, [userId]);
+  }
 
   ngOnDestroy(): void {
     const chatId = this.contactId();

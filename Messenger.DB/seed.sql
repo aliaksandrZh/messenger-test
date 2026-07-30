@@ -6,9 +6,12 @@
 -- Id values are TEXT (Guid). INSERT OR IGNORE keeps it idempotent against the
 -- unique Email index and existing rows.
 
+-- Guid values are UPPERCASE to match EF Core / Microsoft.Data.Sqlite, which
+-- persists Guid columns as uppercased TEXT. Lowercase seed ids would make
+-- EF-written FK references (e.g. Participant.UserId) fail the FK lookup.
 INSERT OR IGNORE INTO Users (Id, Name, Email) VALUES
-    ('a1b2c3d4-e5f6-4a7b-8c9d-0e1f2a3b4c5d', 'Alice Carter',     'alice.carter@example.com'),
-    ('b2c3d4e5-f6a7-4b8c-9d0e-1f2a3b4c5d6e', 'Bob Hoffman',       'bob.hoffman@example.com'),
-    ('c3d4e5f6-a7b8-4c9d-0e1f-2a3b4c5d6e7f', 'Carla Mendez',      'carla.mendez@example.com'),
-    ('d4e5f6a7-b8c9-4d0e-1f2a-3b4c5d6e7f8a', 'David Kim',         'david.kim@example.com'),
-    ('e5f6a7b8-c9d0-4e1f-2a3b-4c5d6e7f8a9b', 'Elena Petrova',     'elena.petrova@example.com');
+    ('A1B2C3D4-E5F6-4A7B-8C9D-0E1F2A3B4C5D', 'Alice Carter',     'alice.carter@example.com'),
+    ('B2C3D4E5-F6A7-4B8C-9D0E-1F2A3B4C5D6E', 'Bob Hoffman',       'bob.hoffman@example.com'),
+    ('C3D4E5F6-A7B8-4C9D-0E1F-2A3B4C5D6E7F', 'Carla Mendez',      'carla.mendez@example.com'),
+    ('D4E5F6A7-B8C9-4D0E-1F2A-3B4C5D6E7F8A', 'David Kim',         'david.kim@example.com'),
+    ('E5F6A7B8-C9D0-4E1F-2A3B-4C5D6E7F8A9B', 'Elena Petrova',     'elena.petrova@example.com');

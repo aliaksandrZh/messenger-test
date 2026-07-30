@@ -5,5 +5,12 @@ import { Component, output } from '@angular/core';
   templateUrl: './new-chat.html',
 })
 export class NewChat {
-  readonly create = output<void>();
+  readonly create = output<string>();
+
+  onCreate(): void {
+    const name = window.prompt('Enter chat name');
+    if (name?.trim()) {
+      this.create.emit(name.trim());
+    }
+  }
 }

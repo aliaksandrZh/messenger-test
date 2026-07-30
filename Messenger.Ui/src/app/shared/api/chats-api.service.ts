@@ -10,12 +10,16 @@ export class ChatsApiService {
   private readonly http = inject(HttpClient);
   private readonly base = API_BASE_URL;
 
-  createChat(name: string): Observable<{ id: string }> {
-    return this.http.post<{ id: string }>(`${this.base}/api/chats`, { name });
+  createChat(name: string, creatorUserId: string): Observable<{ id: string }> {
+    return this.http.post<{ id: string }>(`${this.base}/api/chats`, { name, creatorUserId });
   }
 
   searchChats(query = ''): Observable<Chat[]> {
     return this.http.get<Chat[]>(`${this.base}/api/chats`, { params: { query } });
+  }
+
+  getMyChats(userId: string, query = ''): Observable<Chat[]> {
+    return this.http.get<Chat[]>(`${this.base}/api/chats/user/${userId}`, { params: { query } });
   }
 
   invite(chatId: string, userIds: string[]): Observable<unknown> {
