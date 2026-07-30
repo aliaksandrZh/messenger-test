@@ -18,4 +18,15 @@ public class UserService(IUserRepository userRepository) : IUserService
     UserValidator.EnsureContact(userId, contactId);
     return await userRepository.SaveContactAsync(userId, contactId, cancellationToken);
   }
+
+  public async Task<List<User>> SearchUsersAsync(string query, CancellationToken cancellationToken = default)
+  {
+    return await userRepository.SearchUsersAsync(query ?? string.Empty, cancellationToken);
+  }
+
+  public async Task<List<User>> GetContactsAsync(Guid userId, CancellationToken cancellationToken = default)
+  {
+    UserValidator.EnsureUserId(userId);
+    return await userRepository.GetContactsAsync(userId, cancellationToken);
+  }
 }

@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class UsersRepository(CoreContext context) : RepositoryBase<CoreContext>(context), IUserRepository
 {
   public async Task<User> CreateUserAsync(string name, string email, CancellationToken cancellationToken = default)
@@ -29,5 +31,24 @@ public class UsersRepository(CoreContext context) : RepositoryBase<CoreContext>(
 
     await AddAsync(contact, cancellationToken);
     return contact.UserId;
+  }
+
+  public async Task<List<User>> SearchUsersAsync(string query, CancellationToken cancellationToken = default)
+  {
+    return await Context.Users
+        .Where(u => string.IsNullOrEmpty(query) || u.Name.Contains(query) || u.Email.Contains(query))
+        .ToListAsync(cancellationToken);
+  }
+
+  public async Task<List<User>> GetContactsAsync(Guid userId, CancellationToken cancellationToken = default)
+  {
+    var contactIds = await Context.Contacts
+        .Where(c => c.UserId == userId)
+        .Select(c => c.ContactId)
+        .ToListAsync(cancellationToken);
+
+    return await Context.Users
+        .Where(u => contactIds.Contains(u.Id))
+        .ToListAsync(cancellationToken);
   }
 }

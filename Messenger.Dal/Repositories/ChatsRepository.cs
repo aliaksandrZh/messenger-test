@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+
 public class ChatsRepository(CoreContext context) : RepositoryBase<CoreContext>(context), IChatRepository
 {
   public async Task<Guid> CreateChatAsync(string name, CancellationToken cancellationToken = default)
@@ -20,5 +22,12 @@ public class ChatsRepository(CoreContext context) : RepositoryBase<CoreContext>(
 
     await AddRangeAsync(participants, cancellationToken);
     return chatId;
+  }
+
+  public async Task<List<Chat>> SearchChatsAsync(string query, CancellationToken cancellationToken = default)
+  {
+    return await Context.Chats
+        .Where(c => string.IsNullOrEmpty(query) || c.Name.Contains(query))
+        .ToListAsync(cancellationToken);
   }
 }

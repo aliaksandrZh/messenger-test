@@ -5,7 +5,7 @@ using Microsoft.Extensions.Logging;
 
 public static class DependencyInjectionDal
 {
-  public static IServiceCollection AddServerContexts(this IServiceCollection services)
+  public static IServiceCollection AddContexts(this IServiceCollection services)
   {
     services.AddDbContext<CoreContext>((provider, builder) =>
     {
@@ -20,10 +20,10 @@ public static class DependencyInjectionDal
     return services;
   }
 
-  public static IServiceCollection AddServerDal(this IServiceCollection services)
+  public static IServiceCollection AddDal(this IServiceCollection services)
   {
 
-    services.AddServerContexts();
+    services.AddContexts();
     services.AddScoped<IUserRepository, UsersRepository>();
     services.AddScoped<IChatRepository, ChatsRepository>();
     services.AddScoped<IMessageRepository, MessagesRepository>();

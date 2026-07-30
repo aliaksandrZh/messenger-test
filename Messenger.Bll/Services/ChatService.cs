@@ -12,4 +12,9 @@ public class ChatService(IChatRepository chatRepository) : IChatService
     ChatValidator.EnsureUserIds(userIds);
     return await chatRepository.AddUsersToChatAsync(chatId, userIds, cancellationToken);
   }
+
+  public async Task<List<Chat>> SearchChatsAsync(string query, CancellationToken cancellationToken = default)
+  {
+    return await chatRepository.SearchChatsAsync(query ?? string.Empty, cancellationToken);
+  }
 }
