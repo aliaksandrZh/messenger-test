@@ -1,0 +1,67 @@
+## Visual Studio / Build outputs
+[Bb]in/
+[Oo]bj/
+[LLEe]og/
+[Ll]ogs/
+[Tt]emp/
+*.user
+*.userossc
+*.sln.docstates
+
+## User-specific files
+*.rsuser
+*.suo
+*.user
+*.userquery
+*.user.g.cs
+*.user.g.i.cs
+
+## Visual Studio Code
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+## JetBrains Rider
+.idea/
+*.sln.iml
+
+## User secrets & Sensitive Local Configuration
+# appsettings.Development.json
+# appsettings.Local.json
+*.secrets.json
+secrets.json
+
+## Test Results & Coverage
+[Tt]est[Rr]esult*/
+[Cc]overage/
+*.coverage
+*.coveragexml
+
+## Entity Framework / Local DBs
+*.mdf
+*.ldf
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+# The *.db patterns above would also match the Messenger.DB directory name
+# (case-insensitively on macOS); re-include the folder so its .sql sources track.
+# The actual messenger.db file inside still matches *.db and stays ignored.
+!Messenger.DB/
+
+## NuGet Packages
+*.nupkg
+*.snupkg
+**/packages/*
+!**/packages/build/
+
+## OS-generated files
+.DS_Store
+Thumbs.db
+
+## Stray screenshots / captures
+Screenshot*.png
