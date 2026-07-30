@@ -1,0 +1,13 @@
+<ul class="list-none m-0 p-0">
+  @for (contact of store.contacts(); track contact.id) {
+    <li class="py-1">
+      <button
+        type="button"
+        class="w-full text-left px-3 py-2 border border-gray-200 bg-white cursor-pointer"
+        (click)="select(contact)"
+      >
+        {{ contact.name }}
+      </button>
+    </li>
+  }
+</ul>

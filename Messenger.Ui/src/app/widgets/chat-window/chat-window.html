@@ -1,0 +1,5 @@
+<section class="flex flex-col h-full">
+  <header class="p-3 border-b border-gray-300">{{ header() }}</header>
+  <app-message-list />
+  <app-message-input [chatId]="contactId()" />
+</section>

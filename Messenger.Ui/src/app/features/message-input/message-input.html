@@ -1,0 +1,17 @@
+<div class="flex gap-2 p-2">
+  <input
+    #textRef
+    type="text"
+    class="flex-1 p-2 border border-gray-300"
+    [value]="text()"
+    (input)="text.set(textRef.value)"
+    placeholder="Type a message..."
+  />
+  <button
+    type="button"
+    class="px-4 py-2 border border-gray-300 cursor-pointer"
+    (click)="send()"
+  >
+    Send
+  </button>
+</div>
