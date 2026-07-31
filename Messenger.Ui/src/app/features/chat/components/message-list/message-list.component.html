@@ -1,0 +1,8 @@
+<ul class="list-none m-0 p-3 flex flex-col gap-1.5">
+  @for (row of rows(); track row.id) {
+    <li class="py-1.5 px-2.5 border border-gray-200 rounded-md max-w-[60%]">
+      <div class="text-xs text-gray-500">{{ row.sender }} · {{ row.time }}</div>
+      <div>{{ row.text }}</div>
+    </li>
+  }
+</ul>

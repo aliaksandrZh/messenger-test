@@ -1,0 +1,23 @@
+<div class="flex flex-col gap-2">
+  <input
+    #qRef
+    type="text"
+    class="w-full p-1.5 border border-gray-300"
+    [value]="query()"
+    (input)="query.set(qRef.value)"
+    placeholder="Search chats..."
+  />
+  <ul class="list-none m-0 p-0">
+    @for (chat of filtered(); track chat.id) {
+      <li class="py-1">
+        <button
+          type="button"
+          class="w-full text-left px-3 py-2 border border-gray-200 bg-white cursor-pointer"
+          (click)="select(chat)"
+        >
+          {{ chat.name }}
+        </button>
+      </li>
+    }
+  </ul>
+</div>

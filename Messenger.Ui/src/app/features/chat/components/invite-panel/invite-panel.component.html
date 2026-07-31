@@ -1,0 +1,23 @@
+<div class="p-2 border-b border-gray-300 max-h-48 overflow-auto">
+  <input
+    #qRef
+    type="text"
+    class="w-full mb-2 p-1.5 border border-gray-300"
+    [value]="query()"
+    (input)="query.set(qRef.value)"
+    placeholder="Search users to invite..."
+  />
+  <ul class="list-none m-0 p-0">
+    @for (user of filtered(); track user.id) {
+      <li class="py-1">
+        <button
+          type="button"
+          class="w-full text-left px-3 py-2 border border-gray-200 bg-white cursor-pointer"
+          (click)="invite(user.id)"
+        >
+          {{ user.name }}
+        </button>
+      </li>
+    }
+  </ul>
+</div>
