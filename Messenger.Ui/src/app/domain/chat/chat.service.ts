@@ -1,11 +1,11 @@
-import { Service, inject } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { API_BASE_URL } from '../../core/config/config';
 import { Chat } from './chat.model';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class ChatService {
   private readonly http = inject(HttpClient);
   private readonly base = API_BASE_URL;

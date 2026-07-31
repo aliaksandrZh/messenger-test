@@ -1,4 +1,4 @@
-import { Service, computed, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { signalStore, withState, withMethods, patchState } from '@ngrx/signals';
 
 import { ChatHubService } from '../../core/signalr/chat-hub.service';
@@ -20,7 +20,7 @@ interface ChatFeatureState {
   hubError: HubError | null;
 }
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class ChatFeatureStore extends signalStore(
   withState<ChatFeatureState>({ activeChatId: null, showInvite: false, hubError: null }),
   withMethods(

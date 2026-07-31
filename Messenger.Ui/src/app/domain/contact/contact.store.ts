@@ -1,4 +1,4 @@
-import { Service, computed, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import {
   signalStore,
@@ -18,7 +18,7 @@ interface ContactState {
   selectedId: string | null;
 }
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class ContactStore extends signalStore(
   withState<ContactState>({ loading: false, selectedId: null }),
   withEntities<Contact>(),

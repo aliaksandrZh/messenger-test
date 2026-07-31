@@ -1,4 +1,4 @@
-import { Service, computed } from '@angular/core';
+import { Injectable, computed } from '@angular/core';
 import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 
 const STORAGE_KEY = 'messenger.currentUserId';
@@ -33,7 +33,7 @@ interface SessionState {
   currentUserId: string | null;
 }
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class SessionStore extends signalStore(
   withState<SessionState>({ currentUserId: readUserId() }),
   withComputed(({ currentUserId }) => ({

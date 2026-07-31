@@ -1,4 +1,4 @@
-import { Service } from '@angular/core';
+import { Injectable } from '@angular/core';
 
 /**
  * Thin structured logging seam for the UI. Console-backed today so failures
@@ -9,7 +9,7 @@ import { Service } from '@angular/core';
  * lines stay greppable. `err` is normalized to `Error` to avoid stringifying
  * arbitrary rejection payloads.
  */
-@Service()
+@Injectable({ providedIn: 'root' })
 export class Logger {
   info(context: string, message: string): void {
     this.emit('info', context, message);

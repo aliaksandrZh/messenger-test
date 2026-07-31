@@ -1,4 +1,4 @@
-import { Service, computed, inject } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { signalStore, withState, withComputed, withMethods, patchState } from '@ngrx/signals';
 import { withEntities, setAllEntities, addEntity, removeAllEntities } from '@ngrx/signals/entities';
@@ -11,7 +11,7 @@ interface MessageState {
   activeChatId: string | null;
 }
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class MessageStore extends signalStore(
   withState<MessageState>({ loading: false, activeChatId: null }),
   withEntities<Message>(),

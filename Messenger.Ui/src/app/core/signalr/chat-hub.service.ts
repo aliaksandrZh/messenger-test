@@ -1,4 +1,4 @@
-import { Service, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import {
   HubConnection,
   HubConnectionBuilder,
@@ -11,7 +11,7 @@ import { SIGNALR_HUB_URL } from '../config/config';
 import { ChatHubMessage } from './chat-hub.model';
 import { HubError, HubOperation } from './chat-hub.errors';
 
-@Service()
+@Injectable({ providedIn: 'root' })
 export class ChatHubService {
   private readonly logger = inject(Logger);
   private connection?: HubConnection;
