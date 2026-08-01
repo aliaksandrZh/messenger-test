@@ -1,9 +1,10 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { RouterOutlet, Router } from '@angular/router';
 
 import { ChatListComponent } from './components/chat-list/chat-list.component';
 import { NewChatComponent } from './components/new-chat/new-chat.component';
 import { ChatStore } from '../../domain/chat/chat.store';
+import { ContactStore } from '../../domain/contact/contact.store';
 import { SessionStore } from '../../core/session/session.store';
 
 @Component({
@@ -14,14 +15,21 @@ import { SessionStore } from '../../core/session/session.store';
 })
 export class ChatPage {
   private readonly chatsStore = inject(ChatStore);
+  private readonly contacts = inject(ContactStore);
   private readonly session = inject(SessionStore);
   private readonly router = inject(Router);
 
-  // React to a freshly created chat and navigate to it. Lives in an injection
-  // context, so the effect is auto-disposed with this component.
-  private readonly navigateOnCreated = effect(() => {
-    const id = this.chatsStore.createdChatId();
-    if (id) void this.router.navigate(['chat', id]);
+  protected readonly currentUserName = computed(() => {
+    const id = this.session.currentUserId();
+    if (!id) return '';
+    return this.contacts.contacts().find((c) => c.id === id)?.name ?? '';
+  });
+
+  protected readonly initials = computed(() => {
+    const name = this.currentUserName().trim();
+    if (!name) return '?';
+    const parts = name.split(/\s+/);
+    return (parts[0]?.[0] ?? '') + (parts[1]?.[0] ?? '');
   });
 
   constructor() {
@@ -30,7 +38,7 @@ export class ChatPage {
     if (userId) void this.chatsStore.loadMyChats(userId);
   }
 
-  createChat(name: string): void {
-    this.chatsStore.createChat(name);
+  protected goToNewChat(): void {
+    void this.router.navigate(['new']);
   }
 }

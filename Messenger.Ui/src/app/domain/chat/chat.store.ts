@@ -67,5 +67,21 @@ export class ChatStore extends signalStore(
         throw err;
       }
     },
+    async createChatWithContacts(name: string, userIds: string[]): Promise<void> {
+      const userId = session.currentUserId();
+      if (!userId) throw new Error('No current user selected.');
+      patchState(store, { creating: true, error: null });
+      try {
+        const { id } = await firstValueFrom(api.createChat(name, userId));
+        if (userIds.length > 0) {
+          await firstValueFrom(api.invite(id, userIds));
+        }
+        patchState(store, { creating: false, createdChatId: id });
+        await store.loadMyChats(userId);
+      } catch (err) {
+        patchState(store, { creating: false, error: errorMessage(err) });
+        throw err;
+      }
+    },
   })),
 ) {}

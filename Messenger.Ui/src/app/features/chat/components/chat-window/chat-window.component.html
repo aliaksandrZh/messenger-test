@@ -1,5 +1,5 @@
-<section class="flex flex-col h-full">
-  <header class="p-3 border-b border-gray-300 flex items-center gap-2">
+<app-chat-layout>
+  <div header class="flex items-center gap-2">
     <span class="flex-1">{{ chat.header() }}</span>
     <button
       type="button"
@@ -8,12 +8,15 @@
     >
       Invite
     </button>
-  </header>
+  </div>
 
   @if (chat.showInvite()) {
     <app-invite-panel />
   }
 
   <app-message-list />
-  <app-message-input [chatId]="chatId()" />
-</section>
+
+  <div footer>
+    <app-message-input [chatId]="chatId()" />
+  </div>
+</app-chat-layout>

@@ -1,8 +1,12 @@
 <ul class="list-none m-0 p-3 flex flex-col gap-1.5">
   @for (row of rows(); track row.id) {
-    <li class="py-1.5 px-2.5 border border-gray-200 rounded-md max-w-[60%]">
+    <li
+      class="py-1.5 px-2.5 border border-gray-200 rounded-md max-w-[60%] wrap-break-word"
+      [class.self-start]="!row.isMine"
+      [class.self-end]="row.isMine"
+    >
       <div class="text-xs text-gray-500">{{ row.sender }} · {{ row.time }}</div>
-      <div>{{ row.text }}</div>
+      <div class="whitespace-pre-wrap">{{ row.text }}</div>
     </li>
   }
 </ul>

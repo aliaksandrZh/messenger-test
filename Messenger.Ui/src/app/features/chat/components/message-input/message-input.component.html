@@ -5,6 +5,7 @@
     class="flex-1 p-2 border border-gray-300"
     [value]="text()"
     (input)="text.set(textRef.value)"
+    (keydown.enter)="send()"
     placeholder="Type a message..."
   />
   <button

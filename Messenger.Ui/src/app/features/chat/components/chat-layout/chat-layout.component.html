@@ -1,0 +1,13 @@
+<section class="flex flex-col h-full">
+  <header class="p-3 border-b border-gray-300">
+    <ng-content select="[header]" />
+  </header>
+
+  <div class="flex-auto min-h-0 overflow-auto">
+    <ng-content />
+  </div>
+
+  <footer>
+    <ng-content select="[footer]" />
+  </footer>
+</section>

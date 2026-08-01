@@ -10,6 +10,18 @@ export const ChatRoutes: Routes = [
         loadComponent: () =>
           import('./components/chat-window/chat-window.component').then((m) => m.ChatWindow),
       },
+      {
+        path: 'new',
+        loadComponent: () =>
+          import('./components/new-chat-view/new-chat-view.component').then(
+            (m) => m.NewChatViewComponent,
+          ),
+      },
+      {
+        path: '',
+        loadComponent: () =>
+          import('./components/empty-state/empty-state.component').then((m) => m.EmptyStateComponent),
+      },
     ],
   },
 ];
